@@ -32,6 +32,8 @@ Set from the in-game console (`~`):
 
 Master strikes are preferred over perfect blocks when both are available.
 
+`kcse_ca_alwaysTackle` requires **v1.0.1+**: earlier Linux builds shipped this hook broken (it failed to link), so the cvar existed but never actually worked.
+
 ### Setting these automatically
 
 These cvars aren't registered until after Combat Assist loads, so a `+exec user.cfg` **launch option** (processed at engine boot, before the plugin loads) won't set them — the console just doesn't know about them yet.
