@@ -65,6 +65,8 @@ Building against MSVC/vcpkg on Windows works the same way as upstream; see `.bui
 
 This is a Linux port of [JerryYOJ](https://github.com/JerryYOJ)'s **[CombatAssist](https://github.com/JerryYOJ/CombatAssist-KCSE)**, built on their **[KCSE](https://github.com/JerryYOJ/KCSE-for-kcd1)** framework and **[libKCD1](https://github.com/JerryYOJ/libKCD1)** reverse-engineering work. All credit for the plugin's design and the reverse-engineered game internals it depends on goes to them — this fork's contribution is getting it building and running on Linux via Wine/Proton.
 
+Parts of this port (build fixes, debugging, and documentation) were done with AI assistance.
+
 ## License
 
 [GPLv3](LICENSE)
