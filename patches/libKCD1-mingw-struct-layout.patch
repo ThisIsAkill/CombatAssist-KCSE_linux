@@ -50,3 +50,41 @@ index 19ed995..6533754 100644
 +#endif
  
  }  // namespace wh::combatmodule
+diff --git a/include/combatmodule/C_CombatComboManager.h b/include/combatmodule/C_CombatComboManager.h
+index ba9e3dc..c17de0c 100644
+--- a/include/combatmodule/C_CombatComboManager.h
++++ b/include/combatmodule/C_CombatComboManager.h
+@@ -2,7 +2,9 @@
+ 
+ #include <cstdint>
+ #include <vector>
++#if !defined(__GNUC__) || defined(_MSC_VER)
+ #include <map>
++#endif
+ #include "C_CombatActorUpdatedObject.h"
+ #include "../framework/C_Signal.h"
+ 
+@@ -127,7 +129,13 @@ public:
+     uint64_t        m_transitionExtra1E8;   // +0x1E8
+ 
+     // +0x1F0: combo tracking containers
++    // std::map is 16 bytes under MSVC x64 but 48 under libstdc++.
++    // Use a fixed-size buffer under MinGW so subsequent field offsets match the game binary.
++#if defined(__GNUC__) && !defined(_MSC_VER)
++    uint8_t m_comboTracker[16];                // +0x1F0  MSVC std::map<int32_t,void*> = 16 bytes
++#else
+     std::map<int32_t, void*> m_comboTracker;   // +0x1F0  active-combo map (sub_180208FD8; key/value types UNVERIFIED)
++#endif
+     // +0x200: active-combo tracking vector. Iterated by TryGetComboAction
+     // (sub_180460E54); element S_ActiveCombo layout derived from its reads.
+     std::vector<S_ActiveCombo> m_activeCombos;  // +0x200
+@@ -148,6 +156,9 @@ public:
+     uint16_t        m_comboFlags;           // +0x228  set 0/1 by TryGetComboAction
+     uint8_t         _pad22A[6];             // +0x22A
+ };
++// Size correct when std::map uses its MSVC 16-byte layout (guarded above for MinGW).
++#if !defined(__GNUC__) || defined(_MSC_VER)
+ static_assert(sizeof(C_CombatComboManager) == 0x230);
++#endif
+ 
+ }  // namespace wh::combatmodule
