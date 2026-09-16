@@ -32,6 +32,19 @@ Set from the in-game console (`~`):
 
 Master strikes are preferred over perfect blocks when both are available.
 
+### Setting these automatically
+
+These cvars aren't registered until after Combat Assist loads, so a `+exec user.cfg` **launch option** (processed at engine boot, before the plugin loads) won't set them — the console just doesn't know about them yet.
+
+To avoid retyping them every session, put them in `<game>/user.cfg` as usual:
+
+```
+kcse_ca_alwaysPB = 1
+kcse_ca_alwaysMS = 1
+```
+
+Combat Assist automatically re-runs `exec user.cfg` itself right after registering its cvars, so this file gets applied for real once per game launch — no launch options or manual console entry needed.
+
 ## Building from source
 
 ```sh
