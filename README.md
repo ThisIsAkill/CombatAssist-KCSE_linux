@@ -1,11 +1,11 @@
-# Combat Assist (Linux)
+# Riposte
 
 [![Platform](https://img.shields.io/static/v1?label=platform&message=Linux%20(Proton)%20%7C%20Windows&color=dimgray&style=flat)](#)
 [![License](https://img.shields.io/static/v1?label=license&message=GPLv3&color=blue&style=flat)](LICENSE)
 
-A [KCSE](https://github.com/ThisIsAkill/KCSE-kcd1_linux) plugin for **Kingdom Come: Deliverance 1** that automates perfect blocks and master strikes, configurable via in-game console variables. This build runs on **Linux via Wine/Proton** (and still works on native Windows).
+A Linux/Proton port of **Combat Assist** — [JerryYOJ](https://github.com/JerryYOJ)'s [KCSE](https://github.com/ThisIsAkill/cryhook-kcd1) plugin for **Kingdom Come: Deliverance 1** that automates perfect blocks and master strikes, configurable via in-game console variables. This build runs on **Linux via Wine/Proton** (and still works on native Windows).
 
-Requires [KCSE](https://github.com/ThisIsAkill/KCSE-kcd1_linux) — install that first.
+Requires [Cryhook](https://github.com/ThisIsAkill/cryhook-kcd1) (this project's KCSE port) — install that first.
 
 ## Installation
 
@@ -13,9 +13,9 @@ Requires [KCSE](https://github.com/ThisIsAkill/KCSE-kcd1_linux) — install that
 2. Copy it to `<game>/mods/CombatAssist/KCSE/Plugins/` (create the folders if they don't exist).
 3. Launch the game. Check `<game>/KCSE/KCSE.log` for `Loaded Combat Assist` to confirm it's active.
 
-On Steam Deck, or if you're not sure where `<game>` is or how to copy files there: see [KCSE's Steam Deck / Desktop Mode instructions](https://github.com/ThisIsAkill/KCSE-kcd1_linux#steam-deck--desktop-mode) — same file manager, same steps, just different destination folders.
+On Steam Deck, or if you're not sure where `<game>` is or how to copy files there: see [Cryhook's Steam Deck / Desktop Mode instructions](https://github.com/ThisIsAkill/cryhook-kcd1#steam-deck--desktop-mode) — same file manager, same steps, just different destination folders.
 
-This currently supports **Steam, game version 1.9.7.0** (same as KCSE). On any other build, KCSE fails loudly with a clear dialog rather than silently running with wrong addresses — a crash on launch almost always means a version mismatch, not a corrupt install.
+This currently supports **Steam, game version 1.9.7.0** (same as Cryhook). On any other build, Cryhook fails loudly with a clear dialog rather than silently running with wrong addresses — a crash on launch almost always means a version mismatch, not a corrupt install.
 
 ## Console Variables
 
@@ -47,13 +47,13 @@ kcse_ca_alwaysPB = 1
 kcse_ca_alwaysMS = 1
 ```
 
-Combat Assist automatically re-runs `exec user.cfg` itself right after registering its cvars, so this file gets applied for real once per game launch — no launch options or manual console entry needed.
+Riposte automatically re-runs `exec user.cfg` itself right after registering its cvars, so this file gets applied for real once per game launch — no launch options or manual console entry needed.
 
 ## Building from source
 
 ```sh
-git clone --recursive https://github.com/ThisIsAkill/CombatAssist-KCSE_linux.git
-cd CombatAssist-KCSE_linux
+git clone --recursive https://github.com/ThisIsAkill/riposte.git
+cd riposte
 ./build.sh
 ```
 
