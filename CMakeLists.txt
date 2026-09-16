@@ -24,6 +24,10 @@ if(NOT MSVC)
         ${RE_ROOT}/src/crysystem/SSystemGlobalEnvironment.cpp
         ${RE_ROOT}/src/game/S_GameContext.cpp
         ${RE_ROOT}/src/entitymodule/C_Actor.cpp
+        ${RE_ROOT}/src/REL/Module.cpp
+        ${RE_ROOT}/src/REL/IDDatabase.cpp
+        ${RE_ROOT}/src/REL/Relocation.cpp
+        ${RE_ROOT}/src/REL/BranchTrampoline.cpp
         ${RE_ROOT}/.buildenv/CrySDKStubs.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/cmake/stubs/mingw_cryengine_stubs.cpp
         ${COMBATMODULE_SOURCES})
