@@ -155,7 +155,7 @@ KCSE_PLUGIN_LOAD(kcse)
             // Hook TryHuntAttack — patch I_CombatActorHuntAttack vtable slot [1]
             using HuntVT = wh::combatmodule::C_CombatActorHuntAttack;
             g_origTryHuntAttack = VtableHook::SwapByOffset<TryHuntAttackFn>(
-                Offsets::GetBase(), HuntVT::VTABLE[1], 1, Hooked_TryHuntAttack);
+                Offsets::GetBase(), HuntVT::VTABLE[1].offset(), 1, Hooked_TryHuntAttack);
 
             SSystemGlobalEnvironment::GetInstance()->pLog->LogAlways("[CombatAssist] CVars registered, hooks installed");
         }
