@@ -147,6 +147,11 @@ KCSE_PLUGIN_LOAD(kcse)
             con->RegisterCVarInt("kcse_ca_autoCounter",  &autoCounter,  0, VF_NULL, "N = auto-react N times then stop");
             con->RegisterCVarInt("kcse_ca_alwaysTackle", &alwaysTackle, 0, VF_NULL, "1 = player can always tackle");
 
+            // kcse_ca_* cvars don't exist until this point, so any "+exec user.cfg"
+            // launch option (which runs at engine boot) silently fails to set them.
+            // Re-running it here, now that the cvars are registered, applies it for real.
+            con->ExecuteString("exec user.cfg", true, false);
+
             // Hook TryHuntAttack — patch I_CombatActorHuntAttack vtable slot [1]
             using HuntVT = wh::combatmodule::C_CombatActorHuntAttack;
             g_origTryHuntAttack = VtableHook::SwapByOffset<TryHuntAttackFn>(
