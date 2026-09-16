@@ -5,7 +5,7 @@
 #include "combatmodule/C_CombatActor.h"
 #include "combatmodule/C_CombatActorHuntAttack.h"
 #include "game/S_GameContext.h"
-#include "REL.h"
+#include "vtable_hook.h"
 #include <cstdlib>
 
 // -----------------------------------------------
@@ -149,8 +149,8 @@ KCSE_PLUGIN_LOAD(kcse)
 
             // Hook TryHuntAttack — patch I_CombatActorHuntAttack vtable slot [1]
             using HuntVT = wh::combatmodule::C_CombatActorHuntAttack;
-            g_origTryHuntAttack = reinterpret_cast<TryHuntAttackFn>(
-                REL::Relocation<>{ HuntVT::VTABLE[1] }.write_vfunc(1, Hooked_TryHuntAttack));
+            g_origTryHuntAttack = VtableHook::SwapByOffset<TryHuntAttackFn>(
+                Offsets::GetBase(), HuntVT::VTABLE[1], 1, Hooked_TryHuntAttack);
 
             SSystemGlobalEnvironment::GetInstance()->pLog->LogAlways("[CombatAssist] CVars registered, hooks installed");
         }

@@ -9,7 +9,13 @@ target_precompile_headers(CombatAssist PRIVATE "${RE_BUILDENV}/PCH.h")
 target_compile_definitions(CombatAssist PRIVATE
     _ITERATOR_DEBUG_LEVEL=0 WIN32_LEAN_AND_MEAN NOMINMAX)
 
-target_compile_options(CombatAssist PRIVATE /utf-8 /W4 /wd4819 /wd4100)
+if(MSVC)
+    target_compile_options(CombatAssist PRIVATE /utf-8 /W4 /wd4819 /wd4100)
+else()
+    target_compile_options(CombatAssist PRIVATE
+        -Wall -Wno-unused-parameter
+        -finput-charset=utf-8 -fexec-charset=utf-8)
+endif()
 
 target_include_directories(CombatAssist PRIVATE
     ${RE_ROOT}/include ${RE_ROOT}/include/CryEngine/CryCommon ${CMAKE_CURRENT_SOURCE_DIR}/../src)

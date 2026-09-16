@@ -1,0 +1,52 @@
+diff --git a/include/combatmodule/C_CombatActionSyncHitData.h b/include/combatmodule/C_CombatActionSyncHitData.h
+index b2af649..b2e3b89 100644
+--- a/include/combatmodule/C_CombatActionSyncHitData.h
++++ b/include/combatmodule/C_CombatActionSyncHitData.h
+@@ -1,7 +1,9 @@
+ #pragma once
+ 
+ #include <cstdint>
++#if !defined(__GNUC__) || defined(_MSC_VER)
+ #include <map>
++#endif
+ #include "C_CombatActionTypeData.h"
+ #include "C_CombatAttackTypeData.h"
+ #include "C_CombatInputClassData.h"
+@@ -28,7 +30,13 @@ namespace wh::combatmodule {
+ struct C_CombatActionSyncHitData {
+     int32_t     actor_class_hash;       // +0x00
+     int32_t     _field04;               // +0x04
++    // std::map is 16 bytes under MSVC x64 but 48 under libstdc++.
++    // Use a fixed-size buffer under MinGW so subsequent field offsets match the game binary.
++#if defined(__GNUC__) && !defined(_MSC_VER)
++    uint8_t m_oppActorClasses[16];               // +0x08  MSVC std::map<int32_t,void*> = 16 bytes
++#else
+     std::map<int32_t, void*> m_oppActorClasses;  // +0x08  resolved opp_actor_classes
++#endif
+     bool        mounted;                // +0x18
+     bool        opp_mounted;            // +0x19
+     uint8_t     _pad1A[6];              // +0x1A
+@@ -99,6 +107,9 @@ struct C_CombatActionSyncHitData {
+     int GetActionTypeId() const { return m_pActionType ? m_pActionType->combat_action_type_id : -1; }
+ };
+ #pragma pack(pop)
++// Size correct when std::map uses its MSVC 16-byte layout (guarded above for MinGW).
++#if !defined(__GNUC__) || defined(_MSC_VER)
+ static_assert(sizeof(C_CombatActionSyncHitData) == 0x180);
++#endif
+ 
+ }  // namespace wh::combatmodule
+diff --git a/include/combatmodule/C_CombatActorDirector.h b/include/combatmodule/C_CombatActorDirector.h
+index 19ed995..6533754 100644
+--- a/include/combatmodule/C_CombatActorDirector.h
++++ b/include/combatmodule/C_CombatActorDirector.h
+@@ -38,6 +38,9 @@ public:
+     int32_t  m_fieldD0;                               // +0xD0
+     uint32_t _padD4;                                  // +0xD4
+ };
++// std::map is 48 bytes under libstdc++ but 16 under MSVC; skip under MinGW.
++#if !defined(__GNUC__) || defined(_MSC_VER)
+ static_assert(sizeof(C_CombatActorDirector) == 0xD8, "C_CombatActorDirector must be 0xD8 bytes");
++#endif
+ 
+ }  // namespace wh::combatmodule
