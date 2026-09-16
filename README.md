@@ -13,7 +13,7 @@ Requires [KCSE](https://github.com/ThisIsAkill/KCSE-kcd1_linux) — install that
 2. Copy it to `<game>/mods/CombatAssist/KCSE/Plugins/` (create the folders if they don't exist).
 3. Launch the game. Check `<game>/KCSE/KCSE.log` for `Loaded Combat Assist` to confirm it's active.
 
-This currently supports **Steam, game version 1.9.7.0** (same as KCSE).
+This currently supports **Steam, game version 1.9.7.0** (same as KCSE). On any other build, KCSE fails loudly with a clear dialog rather than silently running with wrong addresses — a crash on launch almost always means a version mismatch, not a corrupt install.
 
 ## Console Variables
 
