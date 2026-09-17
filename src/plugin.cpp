@@ -83,6 +83,13 @@ static wh::combatmodule::E_HuntAttackResult __fastcall Hooked_TryHuntAttack(
 // Auto Perfect Block / Master Strike
 // -----------------------------------------------
 
+// m_pbTriggerCount/m_syncRiposteTriggerCount stay >0 for multiple frames while
+// a trigger window is open. Without these latches, FrameTick's once-per-frame
+// poll calls DispatchCounterAction again on every one of those frames, firing
+// the same counter action several times for a single window.
+static bool s_pbFired = false;
+static bool s_msFired = false;
+
 static void AutoPerfectBlock()
 {
     auto* player = GetPlayerCombatActor();
@@ -90,6 +97,9 @@ static void AutoPerfectBlock()
 
     auto* state = player->m_pState;
     if (!state || !state->m_pOpponent) return;
+
+    if (state->m_pbTriggerCount <= 0) s_pbFired = false;
+    if (state->m_syncRiposteTriggerCount <= 0) s_msFired = false;
 
     if (state->m_pbTriggerCount <= 0 || state->m_isBlocking || state->m_isPerfectBlocking)
         return;
@@ -102,17 +112,19 @@ static void AutoPerfectBlock()
     if (!wantMS && !wantPB)
         return;
 
-    if (wantMS && state->m_syncRiposteTriggerCount > 0) {
+    if (wantMS && state->m_syncRiposteTriggerCount > 0 && !s_msFired) {
         wh::combatmodule::I_CombatActorActionPtr outAction;
         player->DispatchCounterAction(&outAction,
             wh::combatmodule::E_CounterActionType::SyncRiposte, 0);
+        s_msFired = true;
         if (autoCounter > 0) --autoCounter;
         return;
     }
-    else if (wantPB) {
+    else if (wantPB && !s_pbFired) {
         wh::combatmodule::I_CombatActorActionPtr outAction;
         player->DispatchCounterAction(&outAction,
             wh::combatmodule::E_CounterActionType::PerfectBlock, 0);
+        s_pbFired = true;
         if (autoCounter > 0) --autoCounter;
     }
 }
